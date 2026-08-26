@@ -32,6 +32,12 @@ typedef enum e_mode
 	EDF
 }	t_mode;
 
+typedef enum e_type
+{
+    CODER,
+    DONGLE
+}	t_type;
+
 typedef enum e_status
 {
 	DONGLE1,
@@ -108,7 +114,7 @@ void		sift_up(t_heap *heap, int index);
 void		sift_down(t_heap *heap, int index);
 bool		parse(int argc, char **argv);
 bool		init_simulation(t_data *data);
-void		clean(t_data *data);
+void		clear(t_data *data);
 bool		init_data(t_data *data, char **argv);
 void		debug_refactor(t_coder *coder);
 void		push_dongles(t_dongle *first, t_dongle *second, t_coder *coder);

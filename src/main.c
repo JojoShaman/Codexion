@@ -31,8 +31,9 @@ int	main(int argc, char **argv)
 	}
 	if (!init_simulation(data))
 	{
-		free(data);
+		clear(data);
 		return (1);
 	}
+	clear(data);
 	return (0);
 }
