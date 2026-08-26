@@ -1,0 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                       :::      ::::::::    */
+/*   main.c                                            :+:      :+:    :+:    */
+/*                                                   +:+ +:+         +:+      */
+/*   By: srosu <srosu@student.42belgium.be>        #+#  +:+       +#+         */
+/*                                               +#+#+#+#+#+   +#+            */
+/*   Created: 2026/08/26 22:34:34 by srosu            #+#    #+#              */
+/*   Updated: 2026/08/26 22:35:02 by srosu           ###   ########.fr        */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/codexion.h"
+
+int	main(int argc, char **argv)
+{
+	t_data	*data;
+
+	data = malloc(sizeof(t_data));
+	if (!data)
+		return (1);
+	if (!parse(argc, argv))
+	{
+		free(data);
+		return (1);
+	}
+	if (!init_data(data, argv))
+	{
+		free(data);
+		return (1);
+	}
+	if (!init_simulation(data))
+	{
+		free(data);
+		return (1);
+	}
+	// free (data);
+	return (0);
+}
