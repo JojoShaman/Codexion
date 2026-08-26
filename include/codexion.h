@@ -130,7 +130,7 @@ void		display(t_coder *coder, t_status status);
 bool		is_end(t_data *data);
 void		ft_usleep(t_coder *coder, int to_sleep);
 t_request	find_node(t_heap *heap, int coder_id);
-void		display_dongle(t_coder *coder, t_status status, t_dongle *dongle);
+void	display_dongle(t_coder *coder, t_status status, t_dongle *first, t_dongle *second);
 void		display_burnout(t_coder *coder);
 void		cooldown(t_coder *coder, t_dongle *dongle);
 bool		compile(t_coder *coder);

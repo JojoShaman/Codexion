@@ -39,19 +39,23 @@ void	display_burnout(t_coder *coder)
 	pthread_mutex_unlock(&data->write_mtx);
 }
 
-void	display_dongle(t_coder *coder, t_status status, t_dongle *dongle)
+void	display_dongle(t_coder *coder, t_status status, t_dongle *first, t_dongle *second)
 {
 	t_data	*data;
 
 	data = coder->data;
 	if (is_end(data))
+	{
+			pthread_mutex_unlock(&first->dongle_mtx);
+			pthread_mutex_unlock(&second->dongle_mtx);
+	}
 		return ;
 	pthread_mutex_lock(&data->write_mtx);
 	if (DONGLE1 == status)
 		fprintf(stdout, "%llu %d has taken a dongle D%d\n", timestamp(data),
-			coder->id, dongle->id);
+			coder->id, first->id);
 	else if (DONGLE2 == status)
 		fprintf(stdout, "%llu %d has taken a dongle D%d\n", timestamp(data),
-			coder->id, dongle->id);
+			coder->id, second->id);
 	pthread_mutex_unlock(&data->write_mtx);
 }

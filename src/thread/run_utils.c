@@ -52,8 +52,8 @@ bool	dongles_acquired(t_coder *coder, t_dongle *first,
 	second->taken = true;
 	pop_node(first->queue);
 	pop_node(second->queue);
-	display_dongle(coder, DONGLE1, first);
-	display_dongle(coder, DONGLE2, second);
+	display_dongle(coder, DONGLE1, first, second);
+	display_dongle(coder, DONGLE2, first, second);
 	pthread_mutex_unlock(&first->dongle_mtx);
 	pthread_mutex_unlock(&second->dongle_mtx);
 	return (true);
