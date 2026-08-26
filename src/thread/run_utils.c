@@ -44,8 +44,8 @@ bool	dongles_acquired(t_coder *coder, t_dongle *first,
 {
 	if (is_end(coder->data))
 	{
-		pthread_mutex_unlock(&second->dongle_mtx);
 		pthread_mutex_unlock(&first->dongle_mtx);
+		pthread_mutex_unlock(&second->dongle_mtx);
 		return (false);
 	}
 	first->taken = true;
@@ -54,8 +54,8 @@ bool	dongles_acquired(t_coder *coder, t_dongle *first,
 	pop_node(second->queue);
 	display_dongle(coder, DONGLE1, first);
 	display_dongle(coder, DONGLE2, second);
-	pthread_mutex_unlock(&second->dongle_mtx);
 	pthread_mutex_unlock(&first->dongle_mtx);
+	pthread_mutex_unlock(&second->dongle_mtx);
 	return (true);
 }
 
@@ -77,12 +77,12 @@ bool	take_dongles(t_coder *coder)
 			return (dongles_acquired(coder, first, second));
 		if (is_end(coder->data))
 		{
-			pthread_mutex_unlock(&second->dongle_mtx);
 			pthread_mutex_unlock(&first->dongle_mtx);
+			pthread_mutex_unlock(&second->dongle_mtx);
 			break ;
 		}
-		pthread_mutex_unlock(&second->dongle_mtx);
 		pthread_mutex_unlock(&first->dongle_mtx);
+		pthread_mutex_unlock(&second->dongle_mtx);
 	}
 	remove_dongles(first, second, coder);
 	return (false);
