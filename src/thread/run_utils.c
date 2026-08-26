@@ -26,20 +26,20 @@ void	assign_dongle(t_coder *coder, t_dongle **first, t_dongle **second)
 	}
 }
 
-bool dongle_is_ready(t_coder * coder, t_dongle * dongle)
+bool	dongle_is_ready(t_coder *coder, t_dongle *dongle)
 {
 	if (dongle->taken)
 		return (false);
 	if (dongle->last_release > 0
-			&& timestamp(coder->data) - dongle->last_release
-			< coder->data->cooldown)
+		&& timestamp(coder->data) - dongle->last_release
+		< coder->data->cooldown)
 		return (false);
-	return ((dongle->queue)
+	return (dongle->queue
 		&& dongle->queue->size
 		&& dongle->queue->node[0].coder_id == coder->id);
 }
 
-bool dongles_acquired(t_coder * coder, t_dongle * first,
+bool	dongles_acquired(t_coder *coder, t_dongle *first,
 	t_dongle	*second)
 {
 	if (is_end(coder->data))
@@ -48,7 +48,6 @@ bool dongles_acquired(t_coder * coder, t_dongle * first,
 		pthread_mutex_unlock(&first->dongle_mtx);
 		return (false);
 	}
-	// (void)coder;
 	first->taken = true;
 	second->taken = true;
 	pop_node(first->queue);
@@ -60,7 +59,7 @@ bool dongles_acquired(t_coder * coder, t_dongle * first,
 	return (true);
 }
 
-bool take_dongles(t_coder *coder)
+bool	take_dongles(t_coder *coder)
 {
 	t_dongle	*first;
 	t_dongle	*second;
@@ -74,7 +73,7 @@ bool take_dongles(t_coder *coder)
 		pthread_mutex_lock(&first->dongle_mtx);
 		pthread_mutex_lock(&second->dongle_mtx);
 		if (dongle_is_ready(coder, first)
-				&& dongle_is_ready(coder, second))
+			&& dongle_is_ready(coder, second))
 			return (dongles_acquired(coder, first, second));
 		if (is_end(coder->data))
 		{
@@ -89,7 +88,7 @@ bool take_dongles(t_coder *coder)
 	return (false);
 }
 
-bool release_dongles(t_coder *coder)
+bool	release_dongles(t_coder *coder)
 {
 	t_dongle	*first;
 	t_dongle	*second;

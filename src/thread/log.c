@@ -49,9 +49,9 @@ void	display_dongle(t_coder *coder, t_status status, t_dongle *dongle)
 	pthread_mutex_lock(&data->write_mtx);
 	if (DONGLE1 == status)
 		fprintf(stdout, "%llu %d has taken a dongle D%d\n", timestamp(data),
-		coder->id, dongle->id);
+			coder->id, dongle->id);
 	else if (DONGLE2 == status)
 		fprintf(stdout, "%llu %d has taken a dongle D%d\n", timestamp(data),
-		coder->id, dongle->id);
+			coder->id, dongle->id);
 	pthread_mutex_unlock(&data->write_mtx);
 }

@@ -12,9 +12,9 @@
 
 #include "../../include/codexion.h"
 
-bool is_burnout(t_data *data)
+bool	is_burnout(t_data *data)
 {
-	bool ret;
+	bool	ret;
 
 	ret = false;
 	pthread_mutex_lock(&data->burnout_mtx);
@@ -31,9 +31,9 @@ void	coder_finished(t_data *data)
 	pthread_mutex_unlock(&data->gate_mtx);
 }
 
-bool is_end(t_data *data)
+bool	is_end(t_data *data)
 {
-	bool done;
+	bool	done;
 
 	pthread_mutex_lock(&data->gate_mtx);
 	done = (data->finished == data->nb_coder);
@@ -43,7 +43,6 @@ bool is_end(t_data *data)
 	else if (is_burnout(data))
 		return (true);
 	return (false);
-
 }
 
 void	set_burnout(t_data *data)
@@ -53,7 +52,7 @@ void	set_burnout(t_data *data)
 	pthread_mutex_unlock(&data->burnout_mtx);
 }
 
-bool deadline_missed(t_coder *coder)
+bool	deadline_missed(t_coder *coder)
 {
 	long long	last;
 	int			compiled;

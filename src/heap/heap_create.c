@@ -19,7 +19,7 @@ void	*init_heap(t_data *data)
 	heap = malloc(sizeof(t_heap));
 	if (!heap)
 		return (NULL);
-	heap->node = malloc(sizeof(t_request)*data->nb_coder);
+	heap->node = malloc(sizeof(t_request) * data->nb_coder);
 	if (!heap->node)
 	{
 		free(heap);
@@ -30,7 +30,7 @@ void	*init_heap(t_data *data)
 	return (heap);
 }
 
-bool priority(t_request first, t_request second, t_mode scheduler)
+bool	priority(t_request first, t_request second, t_mode scheduler)
 {
 	if (scheduler == EDF)
 	{
@@ -43,7 +43,6 @@ bool priority(t_request first, t_request second, t_mode scheduler)
 		return (first.deadline < second.deadline);
 	}
 	return (first.arrival < second.arrival);
-
 }
 
 void	sift_up(t_heap *heap, int index)
@@ -52,7 +51,8 @@ void	sift_up(t_heap *heap, int index)
 	t_request	tmp;
 
 	parent = (index - 1) / 2;
-	while (index > 0 && priority(heap->node[index], heap->node[parent], heap->scheduler))
+	while (index > 0 && priority(heap->node[index],
+			heap->node[parent], heap->scheduler))
 	{
 		tmp = heap->node[parent];
 		heap->node[parent] = heap->node[index];
@@ -73,11 +73,11 @@ void	sift_down(t_heap *heap, int index)
 	child1 = 2 * index + 1;
 	child2 = 2 * index + 2;
 	if (child1 < heap->size
-			&& priority(heap->node[child1], heap->node[parent], heap->scheduler))
-	parent = child1;
+		&& priority(heap->node[child1], heap->node[parent], heap->scheduler))
+		parent = child1;
 	if (child2 < heap->size
-			&& priority(heap->node[child2], heap->node[parent], heap->scheduler))
-	parent = child2;
+		&& priority(heap->node[child2], heap->node[parent], heap->scheduler))
+		parent = child2;
 	if (parent != index)
 	{
 		tmp = heap->node[index];

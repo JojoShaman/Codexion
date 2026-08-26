@@ -17,7 +17,7 @@ static void	wait_all_coders(t_data *data)
 	pthread_mutex_lock(&data->gate_mtx);
 	while (!data->coders_ready)
 		pthread_cond_wait(&data->gate_cond,
-		&data->gate_mtx);
+			&data->gate_mtx);
 	pthread_mutex_unlock(&data->gate_mtx);
 }
 
@@ -38,7 +38,7 @@ void	*run(void *arg)
 {
 	t_coder	*coder;
 
-	coder = (t_coder *) arg;
+	coder = (t_coder *)arg;
 	wait_all_coders(coder->data);
 	while (!is_end(coder->data))
 	{

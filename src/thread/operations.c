@@ -12,7 +12,7 @@
 
 #include "../../include/codexion.h"
 
-bool compile(t_coder *coder)
+bool	compile(t_coder *coder)
 {
 	pthread_mutex_lock(&coder->mutex);
 	coder->last_compile = get_time();

@@ -11,8 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
+#include <stdbool.h>
 
-void create_thread(t_data * data, t_coder * coder, pthread_t * monitor,
+void	create_thread(t_data *data, t_coder *coder, pthread_t *monitor,
 	pthread_t	*thread)
 {
 	int	i;
@@ -33,19 +34,7 @@ void create_thread(t_data * data, t_coder * coder, pthread_t * monitor,
 	i = -1;
 	while (++i < data->nb_coder)
 		pthread_create(&thread[i],
-		NULL, run, &coder[i]);
-}
-
-void	join_thread(t_data *data, pthread_t *thread, pthread_t *monitor)
-{
-	int	i;
-
-	i = -1;
-	while (++i < data->nb_coder)
-	{
-		pthread_join(thread[i], NULL);
-	}
-	pthread_join(*monitor, NULL);
+			NULL, run, &coder[i]);
 }
 
 void	*init_dongles(t_data *data)
@@ -54,7 +43,7 @@ void	*init_dongles(t_data *data)
 	t_dongle	*dongles;
 
 	i = -1;
-	dongles = malloc(sizeof(t_dongle)*data->nb_coder);
+	dongles = malloc(sizeof(t_dongle) * data->nb_coder);
 	if (!dongles)
 		return (NULL);
 	while (++i < data->nb_coder)
@@ -69,23 +58,19 @@ void	*init_dongles(t_data *data)
 	return (dongles);
 }
 
-bool init_simulation(t_data *data)
+static bool	simulation_data_init(t_data *data, t_coder **coder,
+		pthread_t **thread)
 {
-	t_coder		*coder;
-	pthread_t	monitor;
-	pthread_t	*thread;
-	int			i;
-
-	coder = malloc(sizeof(t_coder)*data->nb_coder);
+	*coder = malloc(sizeof(t_coder) * data->nb_coder);
 	if (!coder)
 		return (false);
-	thread = malloc(sizeof(pthread_t)*data->nb_coder);
+	*thread = malloc(sizeof(pthread_t) * data->nb_coder);
 	if (!thread)
 	{
 		free(coder);
 		return (false);
 	}
-	data->coders = coder;
+	data->coders = *coder;
 	data->coders_ready = false;
 	data->burnout = false;
 	data->finished = 0;
@@ -94,6 +79,18 @@ bool init_simulation(t_data *data)
 	pthread_mutex_init(&data->gate_mtx, NULL);
 	pthread_mutex_init(&data->write_mtx, NULL);
 	pthread_mutex_init(&data->burnout_mtx, NULL);
+	return (true);
+}
+
+bool	init_simulation(t_data *data)
+{
+	t_coder		*coder;
+	pthread_t	monitor;
+	pthread_t	*thread;
+	int			i;
+
+	if (!simulation_data_init(data, &coder, &thread))
+		return (false);
 	create_thread(data, coder, &monitor, thread);
 	pthread_mutex_lock(&data->gate_mtx);
 	data->start = get_time();
@@ -103,12 +100,15 @@ bool init_simulation(t_data *data)
 	data->coders_ready = true;
 	pthread_cond_broadcast(&data->gate_cond);
 	pthread_mutex_unlock(&data->gate_mtx);
-	join_thread(data, thread, &monitor);
-	// free (thread);
+	i = -1;
+	while (++i < data->nb_coder)
+		pthread_join(thread[i], NULL);
+	pthread_join(monitor, NULL);
+	free (thread);
 	return (true);
-
 }
-bool init_data(t_data * data, char * *argv)
+
+bool	init_data(t_data *data, char **argv)
 {
 	data->nb_coder = atoi(argv[1]);
 	data->time_to_burnout = atoi(argv[2]);

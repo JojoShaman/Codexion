@@ -16,14 +16,14 @@ static bool	nb_arg_validator(int argc)
 {
 	char	*error_msg;
 
-	error_msg = "./codexion <number_of_coders> " \
-	"<time_to_burnout> " \
-	"<time_to_compile> " \
-	"<time_to_debug> " \
-	"<time_to_refactor> " \
-	"<number_of_compiles_required> " \
-	"<dongle_cooldown> " \
-	"<scheduler>";
+	error_msg = "./codexion <number_of_coders> "\
+"<time_to_burnout> "\
+"<time_to_compile> "\
+"<time_to_debug> "\
+"<time_to_refactor> "\
+"<number_of_compiles_required> "\
+"<dongle_cooldown> "\
+"<scheduler>";
 	if (argc != 9)
 	{
 		fprintf(stderr, "USAGE ERROR: %s", error_msg);
@@ -45,13 +45,13 @@ static bool	arg_validator(char *argv)
 			{
 				if (argv[i + 1] && argv[i + 1] >= '0' && argv[i + 1] <= '9')
 					fprintf(stderr, "USAGE ERROR: numbers "
-					"should not be negative\n");
+						"should not be negative\n");
 				else
 					fprintf(stderr, "USAGE ERROR: invalid argument\n");
 			}
 			else
 				fprintf(stderr, "USAGE ERROR: arguments should "
-				"only be numbers\n");
+					"only be numbers\n");
 			return (false);
 		}
 	}
@@ -87,7 +87,7 @@ static bool	scheduler_validator(char *argv)
 	return (false);
 }
 
-bool parse(int argc, char * *argv)
+bool	parse(int argc, char **argv)
 {
 	int	i;
 

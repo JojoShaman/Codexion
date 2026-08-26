@@ -34,6 +34,5 @@ int	main(int argc, char **argv)
 		free(data);
 		return (1);
 	}
-	// free (data);
 	return (0);
 }
