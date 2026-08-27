@@ -21,7 +21,9 @@ bool	compile(t_coder *coder)
 	ft_usleep(coder, coder->data->time_to_compile);
 	if (is_end(coder->data))
 		return (false);
+	pthread_mutex_lock(&coder->mutex);
 	coder->nb_compiled++;
+	pthread_mutex_unlock(&coder->mutex);
 	return (true);
 }
 
