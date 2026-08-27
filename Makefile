@@ -1,5 +1,5 @@
 NAME = codexion
-CC = gcc
+CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread
 INCLUDES = -Iheaders
 SRCS = 	src/heap/heap_create.c \
