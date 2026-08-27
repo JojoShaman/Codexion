@@ -13,6 +13,7 @@ SRCS = 	src/heap/heap_create.c \
 		src/thread/utils.c \
 		src/free.c \
 		src/main.c \
+		src/parse_utils.c \
 		src/parsing.c
 
 OBJS = ${SRCS:.c=.o}

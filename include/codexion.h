@@ -34,8 +34,8 @@ typedef enum e_mode
 
 typedef enum e_type
 {
-    CODER,
-    DONGLE
+	CODER,
+	DONGLE
 }	t_type;
 
 typedef enum e_status
@@ -124,23 +124,28 @@ void		*monitoring(void *arg);
 void		*run(void *arg);
 void		push_node(t_heap *heap, t_coder *coder, long long deadline);
 t_request	pop_node(t_heap *heap);
+t_request	find_node(t_heap *heap, int coder_id);
 void		remove_node(t_heap *heap, int coder_id);
 void		remove_dongles(t_dongle *first, t_dongle *second, t_coder *coder);
-void		display(t_coder *coder, t_status status);
+void		log_routine(t_coder *coder, t_status status);
 bool		is_end(t_data *data);
 void		ft_usleep(t_coder *coder, int to_sleep);
-t_request	find_node(t_heap *heap, int coder_id);
-void	display_dongle(t_coder *coder, t_status status, t_dongle *first, t_dongle *second);
-void		display_burnout(t_coder *coder);
+void		log_dongle(t_coder *coder, t_status d, t_dongle *f, t_dongle *s);
+void		log_burnout(t_coder *coder);
 void		cooldown(t_coder *coder, t_dongle *dongle);
 bool		compile(t_coder *coder);
 void		assign_dongle(t_coder *coder, t_dongle **first, t_dongle **second);
 bool		dongle_is_ready(t_coder *coder, t_dongle *dongle);
-bool		dongles_acquired(t_coder *coder, t_dongle *first, t_dongle *second);
+bool		dongle_acquired(t_coder *coder, t_dongle *first, t_dongle *second);
 bool		take_dongles(t_coder *coder);
 bool		release_dongles(t_coder *coder);
 bool		is_burnout(t_data *data);
 void		coder_finished(t_data *data);
 bool		deadline_missed(t_coder *coder);
 void		set_burnout(t_data *data);
+char		*arguments(int pos);
+bool		nb_arg_validator(int argc);
+bool		arg_validator(char *argv, int pos);
+bool		free_overflow(char *argv);
+bool		scheduler_validator(char *argv);
 #endif

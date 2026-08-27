@@ -12,7 +12,7 @@
 
 #include "../../include/codexion.h"
 
-void	display(t_coder *coder, t_status status)
+void	log_routine(t_coder *coder, t_status status)
 {
 	t_data	*data;
 
@@ -29,7 +29,7 @@ void	display(t_coder *coder, t_status status)
 	pthread_mutex_unlock(&data->write_mtx);
 }
 
-void	display_burnout(t_coder *coder)
+void	log_burnout(t_coder *coder)
 {
 	t_data	*data;
 
@@ -39,23 +39,23 @@ void	display_burnout(t_coder *coder)
 	pthread_mutex_unlock(&data->write_mtx);
 }
 
-void	display_dongle(t_coder *coder, t_status status, t_dongle *first, t_dongle *second)
+void	log_dongle(t_coder *coder, t_status d, t_dongle *f, t_dongle *s)
 {
 	t_data	*data;
 
 	data = coder->data;
 	if (is_end(data))
 	{
-			pthread_mutex_unlock(&first->dongle_mtx);
-			pthread_mutex_unlock(&second->dongle_mtx);
-	}
+		pthread_mutex_unlock(&f->dongle_mtx);
+		pthread_mutex_unlock(&s->dongle_mtx);
 		return ;
+	}
 	pthread_mutex_lock(&data->write_mtx);
-	if (DONGLE1 == status)
+	if (DONGLE1 == d)
 		fprintf(stdout, "%llu %d has taken a dongle D%d\n", timestamp(data),
-			coder->id, first->id);
-	else if (DONGLE2 == status)
+			coder->id, f->id);
+	else if (DONGLE2 == d)
 		fprintf(stdout, "%llu %d has taken a dongle D%d\n", timestamp(data),
-			coder->id, second->id);
+			coder->id, s->id);
 	pthread_mutex_unlock(&data->write_mtx);
 }

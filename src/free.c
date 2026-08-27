@@ -17,7 +17,7 @@ void	destroy_data(t_data *data)
 	pthread_mutex_destroy(&data->burnout_mtx);
 	pthread_mutex_destroy(&data->gate_mtx);
 	pthread_mutex_destroy(&data->write_mtx);
-	pthread_cond_destroy(&data->gate_cond);	
+	pthread_cond_destroy(&data->gate_cond);
 }
 
 void	destroy(void *arg, t_type type)
@@ -27,7 +27,7 @@ void	destroy(void *arg, t_type type)
 
 	data = (t_data *)arg;
 	i = -1;
-	while (++i > data->nb_coder)
+	while (++i < data->nb_coder)
 	{
 		if (DONGLE == type)
 		{
@@ -44,11 +44,16 @@ void	destroy(void *arg, t_type type)
 
 void	clear_heap(t_data *data)
 {
-	if (data->dongles->queue)
+	int		i;
+
+	i = -1;
+	while (++i < data->nb_coder)
 	{
-		if (data->dongles->queue->node)
-			free (data->dongles->queue->node);
-		free (data->dongles->queue);
+		if (data->dongles->queue)
+		{
+			free (data->dongles[i].queue->node);
+			free (data->dongles[i].queue);
+		}
 	}
 }
 
@@ -59,7 +64,7 @@ void	clear(t_data *data)
 		if (data->coders)
 		{
 			destroy(data, CODER);
-			free(data->coders);	
+			free(data->coders);
 		}
 		if (data->dongles)
 		{
@@ -67,6 +72,7 @@ void	clear(t_data *data)
 			clear_heap(data);
 			free(data->dongles);
 		}
+		destroy_data(data);
 		free (data);
 	}
 }

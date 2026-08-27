@@ -42,6 +42,11 @@ void	*run(void *arg)
 	wait_all_coders(coder->data);
 	while (!is_end(coder->data))
 	{
+		if (coder->nb_compiled == coder->data->compiles_required)
+		{
+			coder_finished(coder->data);
+			break ;
+		}
 		if (!take_dongles(coder))
 			break ;
 		if (!compile(coder))
@@ -51,11 +56,6 @@ void	*run(void *arg)
 		}
 		release_dongles(coder);
 		debug_refactor(coder);
-		if (coder->nb_compiled == coder->data->compiles_required)
-		{
-			coder_finished(coder->data);
-			break ;
-		}
 	}
 	return (NULL);
 }
@@ -78,7 +78,7 @@ void	*monitoring(void *arg)
 			{
 				set_burnout(data);
 				safe_broadcast(data);
-				display_burnout(current);
+				log_burnout(current);
 				return (NULL);
 			}
 		}

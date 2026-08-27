@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../include/codexion.h"
+#include <string.h>
 
 int	main(int argc, char **argv)
 {
@@ -19,14 +20,15 @@ int	main(int argc, char **argv)
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (1);
+	memset(data, 0, sizeof(t_data));
 	if (!parse(argc, argv))
 	{
-		free(data);
+		clear(data);
 		return (1);
 	}
 	if (!init_data(data, argv))
 	{
-		free(data);
+		clear(data);
 		return (1);
 	}
 	if (!init_simulation(data))
