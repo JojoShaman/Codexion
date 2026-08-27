@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
+#include <pthread.h>
 
 static void	wait_all_coders(t_data *data)
 {
@@ -61,6 +62,13 @@ void	*run(void *arg)
 		debug_refactor(coder);
 	}
 	return (NULL);
+}
+
+static void	set_burnout(t_data *data)
+{
+	pthread_mutex_lock(&data->burnout_mtx);
+	data->burnout = true;
+	pthread_mutex_unlock(&data->burnout_mtx);
 }
 
 void	*monitoring(void *arg)

@@ -54,13 +54,6 @@ bool	is_end(t_data *data)
 	return (false);
 }
 
-void	set_burnout(t_data *data)
-{
-	pthread_mutex_lock(&data->burnout_mtx);
-	data->burnout = true;
-	pthread_mutex_unlock(&data->burnout_mtx);
-}
-
 bool	deadline_missed(t_coder *coder)
 {
 	long long	last;
