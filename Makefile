@@ -1,6 +1,6 @@
 NAME = codexion
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -pthread -g3 -O0
+CFLAGS = -Wall -Wextra -Werror -pthread
 INCLUDES = -Iheaders
 SRCS = 	src/heap/heap_create.c \
 		src/heap/heap_utils.c \

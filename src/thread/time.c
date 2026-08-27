@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "../../include/codexion.h"
+#include <pthread.h>
+#include <stdbool.h>
+#include <time.h>
 
 long long	get_time(void)
 {
@@ -42,4 +45,33 @@ void	ft_usleep(t_coder *coder, int to_sleep)
 		if (rt == ETIMEDOUT)
 			break ;
 	}
+}
+
+static bool	cooldown_left(t_data *data, t_dongle *d, struct timespec *ts)
+{
+	long long	rem;
+	long long	target;
+
+	if (d->last_release < 0)
+		return (false);
+	rem = data->cooldown - (timestamp(data) - d->last_release);
+	if (rem <= 0)
+		return (false);
+	target = get_time() + rem;
+	ts->tv_sec = target / 1000;
+	ts->tv_nsec = (target % 1000) * 1000000;
+	return (true);
+}
+
+void	wait_for_dongle(t_data *data, t_dongle *blocker, t_dongle *other)
+{
+	struct timespec	ts;
+
+	pthread_mutex_unlock(&other->dongle_mtx);
+	if (cooldown_left(data, blocker, &ts))
+		pthread_cond_timedwait(&blocker->dongle_cond,
+			&blocker->dongle_mtx, &ts);
+	else
+		pthread_cond_wait(&blocker->dongle_cond, &blocker->dongle_mtx);
+	pthread_mutex_unlock(&blocker->dongle_mtx);
 }

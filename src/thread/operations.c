@@ -28,7 +28,11 @@ bool	compile(t_coder *coder)
 void	debug_refactor(t_coder *coder)
 {
 	log_routine(coder, DEBUGGING);
+	if (is_end(coder->data))
+		return ;
 	ft_usleep(coder, coder->data->time_to_debug);
 	log_routine(coder, REFACTORING);
+	if (is_end(coder->data))
+		return ;
 	ft_usleep(coder, coder->data->time_to_refactor);
 }

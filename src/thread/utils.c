@@ -31,6 +31,15 @@ void	coder_finished(t_data *data)
 	pthread_mutex_unlock(&data->gate_mtx);
 }
 
+bool	solo_coder(t_coder *coder)
+{
+	pthread_mutex_lock(&coder->right->dongle_mtx);
+	coder->right->taken = true;
+	log_dongle(coder);
+	pthread_mutex_unlock(&coder->right->dongle_mtx);
+	return (false);
+}
+
 bool	is_end(t_data *data)
 {
 	bool	done;

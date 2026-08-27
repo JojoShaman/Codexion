@@ -14,15 +14,12 @@
 
 void	assign_dongle(t_coder *coder, t_dongle **first, t_dongle **second)
 {
+	*first = coder->right;
+	*second = coder->left;
 	if (coder->id % 2)
 	{
 		*first = coder->left;
 		*second = coder->right;
-	}
-	else
-	{
-		*first = coder->right;
-		*second = coder->left;
 	}
 }
 
@@ -52,8 +49,8 @@ bool	dongle_acquired(t_coder *coder, t_dongle *first,
 	second->taken = true;
 	pop_node(first->queue);
 	pop_node(second->queue);
-	log_dongle(coder, DONGLE1, first, second);
-	log_dongle(coder, DONGLE2, first, second);
+	log_dongle(coder);
+	log_dongle(coder);
 	pthread_mutex_unlock(&first->dongle_mtx);
 	pthread_mutex_unlock(&second->dongle_mtx);
 	return (true);
@@ -66,7 +63,7 @@ bool	take_dongles(t_coder *coder)
 
 	assign_dongle(coder, &first, &second);
 	if (first == second)
-		return (false);
+		return (solo_coder(coder));
 	push_dongles(first, second, coder);
 	while (!is_end(coder->data))
 	{
@@ -75,14 +72,10 @@ bool	take_dongles(t_coder *coder)
 		if (dongle_is_ready(coder, first)
 			&& dongle_is_ready(coder, second))
 			return (dongle_acquired(coder, first, second));
-		if (is_end(coder->data))
-		{
-			pthread_mutex_unlock(&first->dongle_mtx);
-			pthread_mutex_unlock(&second->dongle_mtx);
-			break ;
-		}
-		pthread_mutex_unlock(&first->dongle_mtx);
-		pthread_mutex_unlock(&second->dongle_mtx);
+		if (!dongle_is_ready(coder, first))
+			wait_for_dongle(coder->data, first, second);
+		else
+			wait_for_dongle(coder->data, second, first);
 	}
 	remove_dongles(first, second, coder);
 	return (false);

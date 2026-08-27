@@ -31,6 +31,9 @@ static void	safe_broadcast(t_data *data)
 		pthread_mutex_lock(&data->coders[i].mutex);
 		pthread_cond_broadcast(&data->coders[i].cond);
 		pthread_mutex_unlock(&data->coders[i].mutex);
+		pthread_mutex_lock(&data->dongles[i].dongle_mtx);
+		pthread_cond_broadcast(&data->dongles[i].dongle_cond);
+		pthread_mutex_unlock(&data->dongles[i].dongle_mtx);
 	}
 }
 
